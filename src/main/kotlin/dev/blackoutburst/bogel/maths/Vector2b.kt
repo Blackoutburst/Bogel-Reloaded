@@ -31,6 +31,14 @@ class Vector2b {
         return (sqrt((x * x + y * y).toDouble()).toFloat())
     }
 
+    fun copy(): Vector2b {
+        val newVector = Vector2b()
+        newVector.x = this.x
+        newVector.y = this.y
+
+        return (newVector)
+    }
+
     override fun toString(): String {
         return "[$x, $y]"
     }

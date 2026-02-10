@@ -36,6 +36,15 @@ class Vector3b {
         return (sqrt((x * x + y * y + z * z).toDouble()).toFloat())
     }
 
+    fun copy(): Vector3b {
+        val newVector = Vector3b()
+        newVector.x = this.x
+        newVector.y = this.y
+        newVector.z = this.z
+
+        return (newVector)
+    }
+
     override fun toString(): String {
         return "[$x, $y, $z]"
     }
