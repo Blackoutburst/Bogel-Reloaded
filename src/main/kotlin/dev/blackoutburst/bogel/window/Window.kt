@@ -20,7 +20,7 @@ import java.nio.ByteBuffer
 import kotlin.system.exitProcess
 
 object Window {
-    var title = MemoryStack.stackPush().UTF8("Bogel")
+    private var title = MemoryStack.stackPush().UTF8("Bogel")
 
     var id = -1L
     var isOpen = false
@@ -68,6 +68,12 @@ object Window {
 
         glfwSwapBuffers(id)
         glfwPollEvents()
+    }
+
+    fun setTitle(str: String) {
+        title = MemoryStack.stackPush().UTF8(str)
+        
+        glfwSetWindowTitle(id, title)
     }
 
     fun clear() {
