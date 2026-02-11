@@ -72,7 +72,7 @@ object Window {
 
     fun setTitle(str: String) {
         title = MemoryStack.stackPush().UTF8(str)
-        
+
         glfwSetWindowTitle(id, title)
     }
 
