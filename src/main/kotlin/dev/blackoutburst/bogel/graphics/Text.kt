@@ -70,19 +70,6 @@ class Text(var x: Float, var y: Float, var size: Float = 16f, initialText: Strin
         private val shaderProgram = ShaderProgram(vertexShader, fragmentShader)
     }
 
-
-    private fun getVertices(pos: Float, x: Float, y: Float, color: Color) = floatArrayOf(
-        0f + pos, 0f, (0f + x) / 16f, (0f + 15f - y) / 16f, color.r, color.g, color.b,
-        1f + pos, 1f, (1f + x) / 16f, (1f + 15f - y) / 16f, color.r, color.g, color.b,
-        0f + pos, 1f, (0f + x) / 16f, (1f + 15f - y) / 16f, color.r, color.g, color.b,
-        1f + pos, 0f, (1f + x) / 16f, (0f + 15f - y) / 16f, color.r, color.g, color.b,
-    )
-
-    private fun getIndices(offset: Int) = intArrayOf(
-        0 + offset, 1 + offset, 2 + offset,
-        0 + offset, 3 + offset, 1 + offset,
-    )
-
     private var indexCount = 0
 
     private val vaoID = glGenVertexArrays()
