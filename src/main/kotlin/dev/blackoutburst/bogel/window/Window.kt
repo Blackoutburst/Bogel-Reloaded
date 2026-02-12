@@ -68,14 +68,18 @@ object Window {
         glfwPollEvents()
     }
 
-    fun setVsync(enable: Boolean) {
+    fun setVsync(enable: Boolean): Window {
         glfwSwapInterval(if (enable) GLFW_TRUE else GLFW_FALSE)
+
+        return this
     }
 
-    fun setTitle(str: String) {
+    fun setTitle(str: String): Window {
         title = MemoryStack.stackPush().UTF8(str)
 
         glfwSetWindowTitle(id, title)
+
+        return this
     }
 
     fun clear() {
