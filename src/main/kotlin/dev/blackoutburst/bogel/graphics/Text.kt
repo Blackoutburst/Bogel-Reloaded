@@ -5,23 +5,10 @@ import dev.blackoutburst.bogel.maths.Matrix
 import dev.blackoutburst.bogel.shader.Shader
 import dev.blackoutburst.bogel.shader.ShaderProgram
 import dev.blackoutburst.bogel.utils.Color
-import dev.blackoutburst.bogel.utils.stack
-import dev.blackoutburst.bogel.utils.toAscii
 import org.lwjgl.opengl.GL30.*
 import org.lwjgl.system.MemoryUtil
 import java.nio.FloatBuffer
 import java.nio.IntBuffer
-import kotlin.code
-import kotlin.collections.addAll
-import kotlin.collections.forEach
-import kotlin.collections.toFloatArray
-import kotlin.collections.toIntArray
-import kotlin.collections.toTypedArray
-import kotlin.let
-import kotlin.run
-import kotlin.text.replace
-import kotlin.text.toCharArray
-import kotlin.to
 
 class Text(var x: Float, var y: Float, var size: Float = 16f, initialText: String, maxLength: Int = 200, private val processColor: Boolean = true) {
 
@@ -85,13 +72,13 @@ class Text(var x: Float, var y: Float, var size: Float = 16f, initialText: Strin
 
     var text: String = ""
         set(value) {
-            var processed = value.toAscii()
+
             if (processColor) {
-                colorCharMap.forEach { (k, v) -> processed = processed.replace(k, Char(v).toString()) }
+                colorCharMap.forEach { (k, v) -> field = value.replace(k, Char(v).toString()) }
             }
 
-            if (field != processed) {
-                field = processed
+            if (field != value) {
+                field = value
                 updateMesh()
             }
         }

@@ -2,14 +2,13 @@ package dev.blackoutburst.bogel.window
 
 import dev.blackoutburst.bogel.input.Keyboard
 import dev.blackoutburst.bogel.input.Mouse
-import dev.blackoutburst.bogel.maths.Vector2i
 import dev.blackoutburst.bogel.utils.IOUtils
 import dev.blackoutburst.bogel.utils.Time
 import dev.blackoutburst.bogel.utils.stack
 import dev.blackoutburst.bogel.window.callbacks.*
-import org.lwjgl.glfw.*
 import org.lwjgl.glfw.Callbacks.glfwFreeCallbacks
 import org.lwjgl.glfw.GLFW.*
+import org.lwjgl.glfw.GLFWImage
 import org.lwjgl.opengl.GL.createCapabilities
 import org.lwjgl.opengl.GL11.*
 import org.lwjgl.stb.STBImage
@@ -25,10 +24,10 @@ object Window {
     var id = -1L
     var isOpen = false
 
-    val width: Int
-        get() = getFrameBufferSize().x
-    val height: Int
-        get() = getFrameBufferSize().y
+    var width: Int = 1280
+        internal set
+    var height: Int = 720
+        internal set
 
     init {
         glfwInit()
@@ -134,18 +133,5 @@ object Window {
         }
 
         return image!!
-    }
-
-    private fun getFrameBufferSize(): Vector2i {
-        val size = Vector2i()
-        stack {
-            val width = it.mallocInt(1)
-            val height = it.mallocInt(1)
-
-            glfwGetFramebufferSize(id, width, height)
-            size.set(width[0], height[0])
-        }
-
-        return size
     }
 }

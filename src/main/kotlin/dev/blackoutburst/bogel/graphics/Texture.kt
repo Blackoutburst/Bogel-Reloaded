@@ -2,9 +2,9 @@ package dev.blackoutburst.bogel.graphics
 
 import dev.blackoutburst.bogel.utils.IOUtils
 import dev.blackoutburst.bogel.utils.stack
-import java.nio.ByteBuffer
 import org.lwjgl.opengl.GL30.*
 import org.lwjgl.stb.STBImage
+import java.nio.ByteBuffer
 
 class Texture {
     var id = -1

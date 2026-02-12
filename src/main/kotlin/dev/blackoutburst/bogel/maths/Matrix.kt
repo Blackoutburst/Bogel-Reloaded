@@ -24,6 +24,8 @@ class Matrix {
     var m32: Float = 0f
     var m33: Float = 0f
 
+    private val floatValues = FloatArray(16)
+
     constructor() {
         this.setIdentity()
     }
@@ -316,12 +318,27 @@ class Matrix {
     }
 
     fun getValues(): FloatArray {
-        return (floatArrayOf(
-            this.m00, this.m01, this.m02, this.m03,
-            this.m10, this.m11, this.m12, this.m13,
-            this.m20, this.m21, this.m22, this.m23,
-            this.m30, this.m31, this.m32, this.m33
-        ))
+        floatValues[0 ] = this.m00
+        floatValues[1 ] = this.m01
+        floatValues[2 ] = this.m02
+        floatValues[3 ] = this.m03
+
+        floatValues[4 ] = this.m10
+        floatValues[5 ] = this.m11
+        floatValues[6 ] = this.m12
+        floatValues[7 ] = this.m13
+
+        floatValues[8 ] = this.m20
+        floatValues[9 ] = this.m21
+        floatValues[10] = this.m22
+        floatValues[11] = this.m23
+
+        floatValues[12] = this.m30
+        floatValues[13] = this.m31
+        floatValues[14] = this.m32
+        floatValues[15] = this.m33
+
+        return floatValues
     }
 
     fun transform(right: Vector4f): Vector4f {

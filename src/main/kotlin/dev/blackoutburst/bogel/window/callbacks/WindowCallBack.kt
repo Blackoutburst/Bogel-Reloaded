@@ -2,6 +2,7 @@ package dev.blackoutburst.bogel.window.callbacks
 
 import dev.blackoutburst.bogel.camera.Camera
 import dev.blackoutburst.bogel.maths.Matrix
+import dev.blackoutburst.bogel.window.Window
 import org.lwjgl.glfw.GLFW.glfwSetWindowSize
 import org.lwjgl.glfw.GLFWWindowSizeCallbackI
 import org.lwjgl.opengl.GL11.glViewport
@@ -13,6 +14,9 @@ class WindowCallBack : GLFWWindowSizeCallbackI {
 
         glfwSetWindowSize(window, width, height)
         glViewport(0, 0, width * scale, height * scale)
+
+        Window.width = width
+        Window.height = height
 
         Camera.projection2D = Matrix().ortho2D(0f, (width * scale).toFloat(), 0f, (height * scale).toFloat(), -1f, 1f)
     }
