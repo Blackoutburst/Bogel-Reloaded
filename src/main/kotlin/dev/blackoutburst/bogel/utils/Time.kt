@@ -8,7 +8,7 @@ object Time {
 
     fun updateDelta() {
         val time = System.nanoTime()
-        deltaTime = ((time - lastTime) / 1e9f).toDouble()
+        deltaTime = ((time - lastTime) / 1e6f).toDouble()
         lastTime = time
     }
 

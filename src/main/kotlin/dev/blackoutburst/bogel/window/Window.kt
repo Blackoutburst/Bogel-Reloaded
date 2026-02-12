@@ -44,8 +44,6 @@ object Window {
         glfwMakeContextCurrent(id)
         createCapabilities()
 
-        glfwSwapInterval(GLFW_TRUE)
-
         glfwCreateStandardCursor(GLFW_POINTING_HAND_CURSOR)
 
         glClearColor(0.1f, 0.1f, 0.1f, 1f)
@@ -68,6 +66,10 @@ object Window {
 
         glfwSwapBuffers(id)
         glfwPollEvents()
+    }
+
+    fun setVsync(enable: Boolean) {
+        glfwSwapInterval(if (enable) GLFW_TRUE else GLFW_FALSE)
     }
 
     fun setTitle(str: String) {
