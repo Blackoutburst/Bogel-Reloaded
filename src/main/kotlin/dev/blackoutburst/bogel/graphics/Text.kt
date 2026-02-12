@@ -115,7 +115,7 @@ class Text(var x: Float, var y: Float, var size: Float = 16f, initialText: Strin
         glBindVertexArray(vaoID)
 
         glBindBuffer(GL_ARRAY_BUFFER, vboID)
-
+        glBufferData(GL_ARRAY_BUFFER, (vertices.size * 4).toLong(), GL_DYNAMIC_DRAW)
         glEnableVertexAttribArray(0)
         glVertexAttribPointer(0, 2, GL_FLOAT, false, 28, 0)
         glEnableVertexAttribArray(1)
@@ -124,6 +124,7 @@ class Text(var x: Float, var y: Float, var size: Float = 16f, initialText: Strin
         glVertexAttribPointer(2, 3, GL_FLOAT, false, 28, 16)
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboID)
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, (indices.size * 4).toLong(), GL_DYNAMIC_DRAW)
 
         glBindVertexArray(0)
     }
@@ -182,13 +183,15 @@ class Text(var x: Float, var y: Float, var size: Float = 16f, initialText: Strin
 
         vertexBuffer.clear()
         vertexBuffer.put(vertices, 0, vertexPos).flip()
-        glBindBuffer(GL_ARRAY_BUFFER, vboID)
-        glBufferData(GL_ARRAY_BUFFER, vertexBuffer, GL_DYNAMIC_DRAW)
-
         indexBuffer.clear()
         indexBuffer.put(indices, 0, indexPos).flip()
+
+        glBindVertexArray(vaoID)
+        glBindBuffer(GL_ARRAY_BUFFER, vboID)
+        glBufferSubData(GL_ARRAY_BUFFER, 0, vertexBuffer)
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboID)
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexBuffer, GL_DYNAMIC_DRAW)
+        glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, indexBuffer)
+        glBindVertexArray(0)
     }
 
     fun render() {
