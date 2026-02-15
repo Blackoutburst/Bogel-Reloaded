@@ -6,7 +6,7 @@ import org.lwjgl.opengl.GL30.*
 import org.lwjgl.stb.STBImage
 import java.nio.ByteBuffer
 
-class TextureArray(files: List<String>, size: Int = 16) {
+class TextureArray(files: List<String>, size: Int = 16, fromJar: Boolean = true) {
     var id = -1
 
     init {
@@ -24,8 +24,11 @@ class TextureArray(files: List<String>, size: Int = 16) {
             )
 
             for ((index, file) in files.withIndex()) {
-                val data = STBImage.stbi_load_from_memory(IOUtils.ioResourceToByteBuffer(file, 1024), widthBuffer, heightBuffer, comp, 4)
-                    ?: continue
+                val data = if (fromJar)
+                                STBImage.stbi_load_from_memory(IOUtils.ioResourceToByteBuffer(file, 1024), widthBuffer, heightBuffer, comp, 4) ?: continue
+                            else
+                                STBImage.stbi_load(file, widthBuffer, heightBuffer, comp, 4) ?: continue
+
 
                 glTexSubImage3D(
                     GL_TEXTURE_2D_ARRAY, 0, 0, 0, index,
