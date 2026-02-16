@@ -18,6 +18,6 @@ class WindowCallBack : GLFWWindowSizeCallbackI {
         Window.width = width
         Window.height = height
 
-        Camera.projection2D = Matrix().ortho2D(0f, (width * scale).toFloat(), 0f, (height * scale).toFloat(), -1f, 1f)
+        Camera.projection2D = Matrix().ortho2D(0f, width.toFloat(), 0f, height.toFloat(), -1f, 1f)
     }
 }
