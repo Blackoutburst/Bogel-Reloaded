@@ -80,6 +80,8 @@ class Button(
         if (hover && Mouse.isButtonPressed(Mouse.LEFT_BUTTON)) {
             unit()
         }
+
+        Mouse.update()
     }
 
     fun render() {
