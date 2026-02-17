@@ -4,7 +4,6 @@ import dev.blackoutburst.bogel.input.Mouse
 import dev.blackoutburst.bogel.utils.stack
 import org.lwjgl.glfw.GLFW.glfwGetCursorPos
 import org.lwjgl.glfw.GLFWCursorPosCallbackI
-import org.lwjgl.system.Platform
 
 class MousePositionCallBack : GLFWCursorPosCallbackI {
     override fun invoke(window: Long, xPos: Double, yPos: Double) {

@@ -1,9 +1,9 @@
 package dev.blackoutburst.bogel.ui
 
 import dev.blackoutburst.bogel.graphics.ColoredBox2D
-import dev.blackoutburst.bogel.utils.Color
 import dev.blackoutburst.bogel.graphics.Text
 import dev.blackoutburst.bogel.input.Mouse
+import dev.blackoutburst.bogel.utils.Color
 import dev.blackoutburst.bogel.window.Window
 
 class Button(
