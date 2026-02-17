@@ -50,7 +50,7 @@ class Texture {
         }
     }
 
-    constructor(filePath: String, flip: Boolean = true) {
+    constructor(filePath: String, flip: Boolean = true, fromJar: Boolean = true) {
         stack { stack ->
             id = glGenTextures()
             glBindTexture(GL_TEXTURE_2D, id)
@@ -61,13 +61,10 @@ class Texture {
 
             STBImage.stbi_set_flip_vertically_on_load(flip)
 
-            val data = STBImage.stbi_load_from_memory(
-                IOUtils.ioResourceToByteBuffer(filePath, 4096),
-                width,
-                height,
-                comp,
-                4
-            )
+            val data = if (fromJar)
+                STBImage.stbi_load_from_memory(IOUtils.ioResourceToByteBuffer(filePath, 1024), width, height, comp, 4) ?: throw Exception()
+            else
+                STBImage.stbi_load(filePath, width, height, comp, 4) ?: throw Exception()
 
             glTexImage2D(
                 GL_TEXTURE_2D,
