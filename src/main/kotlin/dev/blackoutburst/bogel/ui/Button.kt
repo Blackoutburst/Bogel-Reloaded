@@ -12,6 +12,7 @@ class Button(
     var width: Float,
     var height: Float,
     var textDisplayed: String,
+    var borderRadius: Float = 0.0f,
 ){
     var fontSize: Float = 16f
     var outlineSize: Float = 1f
@@ -44,8 +45,8 @@ class Button(
             text.y = y + height / 2 - text.height / 2
         }
 
-    val outline = ColoredBox2D(x - (1 * outlineSize), y - (1  * outlineSize), width + (2 * outlineSize), height + ( 2 * outlineSize), outlineColor)
-    val background = ColoredBox2D(x, y, width, height, backgroundColor)
+    val outline = ColoredBox2D(x - (1 * outlineSize), y - (1  * outlineSize), width + (2 * outlineSize), height + ( 2 * outlineSize), outlineColor, borderRadius = borderRadius)
+    val background = ColoredBox2D(x, y, width, height, backgroundColor, borderRadius = borderRadius)
     val text = Text(x + width / 2, y + height / 2, fontSize, textDisplayed)
 
     private var hover = false

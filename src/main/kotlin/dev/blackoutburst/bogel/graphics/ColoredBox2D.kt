@@ -8,7 +8,7 @@ import dev.blackoutburst.bogel.utils.Color
 import dev.blackoutburst.bogel.utils.stack
 import org.lwjgl.opengl.GL30.*
 
-class ColoredBox2D(var x: Float, var y: Float, var width: Float, var height: Float, var color: Color) {
+class ColoredBox2D(var x: Float, var y: Float, var width: Float, var height: Float, var color: Color, var borderRadius: Float = 0.0f) {
     companion object {
         private val vertices = floatArrayOf(
             0f, 0f, 0f, 0f,
@@ -62,6 +62,7 @@ class ColoredBox2D(var x: Float, var y: Float, var width: Float, var height: Flo
         shaderProgram.setUniformMat4("model", model.setIdentity().translate(x, y).scale(width, height))
         shaderProgram.setUniformMat4("projection", Camera.projection2D)
         shaderProgram.setUniformMat4("view", Camera.view)
+        shaderProgram.setUniform1f("borderRadius", borderRadius)
 
         glBindVertexArray(vaoID)
         glDrawElements(GL_TRIANGLES, indices.size, GL_UNSIGNED_INT, 0)
