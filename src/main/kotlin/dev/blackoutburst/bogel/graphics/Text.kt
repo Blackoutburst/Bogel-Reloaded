@@ -72,13 +72,14 @@ class Text(var x: Float, var y: Float, var size: Float = 16f, initialText: Strin
 
     var text: String = ""
         set(value) {
-
-            if (processColor) {
-                colorCharMap.forEach { (k, v) -> field = value.replace(k, Char(v).toString()) }
+            val processed = if (processColor) {
+                colorCharMap.entries.fold(value) { acc, (k, v) -> acc.replace(k, Char(v).toString()) }
+            } else {
+                value
             }
 
-            if (field != value) {
-                field = value
+            if (field != processed) {
+                field = processed
                 updateMesh()
             }
         }
@@ -182,9 +183,12 @@ class Text(var x: Float, var y: Float, var size: Float = 16f, initialText: Strin
     }
 
     fun render() {
+        println(indexCount)
+
         glUseProgram(shaderProgram.id)
         shaderProgram.setUniform1i("diffuseMap", 0)
         shaderProgram.setUniformMat4("model", model.setIdentity().translate(x, y).scale(size, size))
+        shaderProgram.setUniformMat4("view", Camera.view)
         shaderProgram.setUniformMat4("projection", Camera.projection2D)
 
         glActiveTexture(GL_TEXTURE0)

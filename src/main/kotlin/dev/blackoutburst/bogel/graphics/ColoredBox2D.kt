@@ -62,6 +62,7 @@ class ColoredBox2D(var x: Float, var y: Float, var width: Float, var height: Flo
         shaderProgram.setUniformMat4("model", model.setIdentity().translate(x, y).scale(width, height))
         shaderProgram.setUniformMat4("projection", Camera.projection2D)
         shaderProgram.setUniformMat4("view", Camera.view)
+        shaderProgram.setUniform2f("size", width, height)
         shaderProgram.setUniform1f("borderRadius", borderRadius)
 
         glBindVertexArray(vaoID)
