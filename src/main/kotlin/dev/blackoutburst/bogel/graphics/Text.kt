@@ -183,8 +183,6 @@ class Text(var x: Float, var y: Float, var size: Float = 16f, initialText: Strin
     }
 
     fun render() {
-        println(indexCount)
-
         glUseProgram(shaderProgram.id)
         shaderProgram.setUniform1i("diffuseMap", 0)
         shaderProgram.setUniformMat4("model", model.setIdentity().translate(x, y).scale(size, size))
