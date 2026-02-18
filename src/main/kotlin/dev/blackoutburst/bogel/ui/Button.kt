@@ -1,5 +1,6 @@
 package dev.blackoutburst.bogel.ui
 
+import dev.blackoutburst.bogel.camera.Camera
 import dev.blackoutburst.bogel.graphics.ColoredBox2D
 import dev.blackoutburst.bogel.graphics.Text
 import dev.blackoutburst.bogel.input.Mouse
@@ -57,8 +58,8 @@ class Button(
     }
 
     fun onHover(unit: () -> Unit) {
-        val mouseX = Mouse.position.x
-        val mouseY = Window.height - Mouse.position.y
+        val mouseX = -Camera.position.x + Mouse.position.x
+        val mouseY = -Camera.position.y + Window.height - Mouse.position.y
 
         if (mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height) {
             hover = true
@@ -67,8 +68,8 @@ class Button(
     }
 
     fun onExit(unit: () -> Unit) {
-        val mouseX = Mouse.position.x
-        val mouseY = Window.height - Mouse.position.y
+        val mouseX = -Camera.position.x + Mouse.position.x
+        val mouseY = -Camera.position.y + Window.height - Mouse.position.y
 
         if (!(mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height) && hover) {
             hover = false
