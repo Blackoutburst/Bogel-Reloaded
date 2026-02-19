@@ -51,8 +51,6 @@ object Window {
 
         setCallbacks()
 
-        //setIcons()
-
         isOpen = true
     }
 

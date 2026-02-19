@@ -27,7 +27,7 @@ void main() {
         discard;
     }
 
-    float hue = gl_FragCoord.x / 180.0;
+    float hue = uv.x;
     vec3 color = hsv2rgb(vec3(hue, 1.0, 1.0));
     FragColor = vec4(color, 1.0);
 }
