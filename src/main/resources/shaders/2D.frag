@@ -1,12 +1,12 @@
 #version 410 core
 
 uniform sampler2D diffuseMap;
+uniform float alpha;
 uniform float borderRadius;
 uniform vec2 size;
 
 in vec2 uv;
 out vec4 FragColor;
-
 
 float sdRoundedBox(vec2 p, vec2 b, float r) {
     vec2 q = abs(p) - b + r;

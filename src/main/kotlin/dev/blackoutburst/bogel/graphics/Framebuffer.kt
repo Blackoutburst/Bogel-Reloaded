@@ -6,10 +6,29 @@ import dev.blackoutburst.bogel.maths.Vector2f
 import dev.blackoutburst.bogel.shader.Shader
 import dev.blackoutburst.bogel.shader.ShaderProgram
 import dev.blackoutburst.bogel.utils.stack
-import dev.blackoutburst.bogel.window.Window
 import org.lwjgl.opengl.GL30.*
 
-class Framebuffer(val width: Int, val height: Int, depthBuffer: Boolean = false) {
+class Framebuffer(val width: Int, val height: Int, val depthBuffer: Boolean = false) {
+    companion object {
+        private val vertexShader = Shader(GL_VERTEX_SHADER, "/shaders/2D.vert")
+        private val fragmentShader = Shader(GL_FRAGMENT_SHADER, "/shaders/2D.frag")
+        private val fragmentShaderDepth = Shader(GL_FRAGMENT_SHADER, "/shaders/depth.frag")
+        private val shaderProgram = ShaderProgram(vertexShader, fragmentShader)
+        private val shaderProgramDepth = ShaderProgram(vertexShader, fragmentShaderDepth)
+
+        private val vertices = floatArrayOf(
+            0f, 0f, 0f, 0f,
+            1f, 1f, 1f, 1f,
+            0f, 1f, 0f, 1f,
+            1f, 0f, 1f, 0f,
+        )
+
+        private val indices = intArrayOf(
+            0, 1, 2,
+            0, 3, 1,
+        )
+    }
+
     var fbo = glGenFramebuffers()
     var rbo = glGenRenderbuffers()
     var texture = glGenTextures()
@@ -18,21 +37,6 @@ class Framebuffer(val width: Int, val height: Int, depthBuffer: Boolean = false)
     private val vboID = glGenBuffers()
     private val eboID = glGenBuffers()
 
-    private val vertexShader = Shader(GL_VERTEX_SHADER, "/shaders/2D.vert")
-    private val fragmentShader = Shader(GL_FRAGMENT_SHADER, if (depthBuffer) "/shaders/depth.frag" else "/shaders/2D.frag")
-    private val shaderProgram = ShaderProgram(vertexShader, fragmentShader)
-
-    private val vertices = floatArrayOf(
-        0f, 0f, 0f, 0f,
-        1f, 1f, 1f, 1f,
-        0f, 1f, 0f, 1f,
-        1f, 0f, 1f, 0f,
-    )
-
-    private val indices = intArrayOf(
-        0, 1, 2,
-        0, 3, 1,
-    )
 
     init {
         if (depthBuffer)
@@ -68,7 +72,7 @@ class Framebuffer(val width: Int, val height: Int, depthBuffer: Boolean = false)
 
     private fun genBuffers() {
         glBindTexture(GL_TEXTURE_2D, texture)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0)
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
 
@@ -111,12 +115,17 @@ class Framebuffer(val width: Int, val height: Int, depthBuffer: Boolean = false)
         glBindFramebuffer(GL_FRAMEBUFFER, 0)
     }
 
-    fun render(x: Float, y: Float, width: Float, height: Float) {
-        glUseProgram(shaderProgram.id)
-        shaderProgram.setUniform1i("diffuseMap", 0)
-        shaderProgram.setUniformMat4("model", Matrix().translate(Vector2f(x, y)).scale(Vector2f(width, height)))
-        shaderProgram.setUniformMat4("view", Camera.view)
-        shaderProgram.setUniformMat4("projection", Matrix().ortho2D(0f, Window.width.toFloat(), 0f, Window.height.toFloat(), -1f, 1f))
+    fun render(x: Float, y: Float, width: Float, height: Float, alpha: Float = 1.0f, borderRadius: Float = 0f) {
+        val program = if (depthBuffer) shaderProgramDepth else shaderProgram
+
+        glUseProgram(program.id)
+        program.setUniform1i("diffuseMap", 0)
+        program.setUniformMat4("model", Matrix().translate(Vector2f(x, y)).scale(Vector2f(width, height)))
+        program.setUniformMat4("view", Camera.view)
+        program.setUniformMat4("projection", Camera.projection2D)
+        program.setUniform2f("size", width, height)
+        program.setUniform1f("alpha", alpha)
+        program.setUniform1f("borderRadius", borderRadius)
 
         glActiveTexture(GL_TEXTURE0)
         glBindTexture(GL_TEXTURE_2D, texture)
