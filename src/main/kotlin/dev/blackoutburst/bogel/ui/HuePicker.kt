@@ -11,7 +11,7 @@ import dev.blackoutburst.bogel.utils.stack
 import dev.blackoutburst.bogel.window.Window
 import org.lwjgl.opengl.GL30.*
 
-class HuePicker(var x: Float, var y: Float, var width: Float, var height: Float) {
+class HuePicker(var x: Float, var y: Float, var width: Float, var height: Float, var borderRadius: Float = 0.0f) {
     companion object {
         private val vertices = floatArrayOf(
             0f, 0f, 0f, 0f,
@@ -62,12 +62,15 @@ class HuePicker(var x: Float, var y: Float, var width: Float, var height: Float)
     }
 
     fun selectColor(currentColor: Color): Color {
-        if (Mouse.position.x >= x &&
-            Mouse.position.x <= x + width &&
-            Window.height - Mouse.position.y >= y &&
-            Window.height - Mouse.position.y <= y + height) {
+        val mouseX = -Camera.position.x + Mouse.position.x
+        val mouseY = -Camera.position.y + Window.height - Mouse.position.y
 
-            val hue = (Mouse.position.x - x) * (360 / width)
+        if (mouseX >= x &&
+            mouseX <= x + width &&
+            mouseY >= y &&
+            mouseY<= y + height) {
+
+            val hue = (mouseX - x) * (360 / width)
             return hueToRGB(hue)
         }
         return currentColor
@@ -76,7 +79,10 @@ class HuePicker(var x: Float, var y: Float, var width: Float, var height: Float)
     fun render() {
         glUseProgram(shaderProgram.id)
         shaderProgram.setUniformMat4("model", model.setIdentity().translate(x, y).scale(width, height))
+        shaderProgram.setUniformMat4("view", Camera.view)
         shaderProgram.setUniformMat4("projection", Camera.projection2D)
+        shaderProgram.setUniform2f("size", width, height)
+        shaderProgram.setUniform1f("borderRadius", borderRadius)
 
         glBindVertexArray(vaoID)
         glDrawElements(GL_TRIANGLES, indices.size, GL_UNSIGNED_INT, 0)

@@ -10,7 +10,7 @@ import dev.blackoutburst.bogel.utils.stack
 import dev.blackoutburst.bogel.window.Window
 import org.lwjgl.opengl.GL30.*
 
-class ColorPicker(var x: Float, var y: Float, var width: Float, var height: Float) {
+class ColorPicker(var x: Float, var y: Float, var width: Float, var height: Float, var borderRadius: Float = 0.0f) {
     companion object {
         private val vertices = floatArrayOf(
             0f, 0f, 0f, 0f,
@@ -62,8 +62,8 @@ class ColorPicker(var x: Float, var y: Float, var width: Float, var height: Floa
     }
 
     fun selectColor(currentColor: Color): Color {
-        val mouseX = Mouse.position.x
-        val mouseY = Window.height - Mouse.position.y
+        val mouseX = -Camera.position.x + Mouse.position.x
+        val mouseY = -Camera.position.y + Window.height - Mouse.position.y
 
         if (mouseX >= x &&
             mouseX <= x + width &&
@@ -88,8 +88,11 @@ class ColorPicker(var x: Float, var y: Float, var width: Float, var height: Floa
     fun render() {
         glUseProgram(shaderProgram.id)
         shaderProgram.setUniformMat4("model", model.setIdentity().translate(x, y).scale(width, height))
+        shaderProgram.setUniformMat4("view", Camera.view)
         shaderProgram.setUniformMat4("projection", Camera.projection2D)
         shaderProgram.setUniform4f("color", color)
+        shaderProgram.setUniform2f("size", width, height)
+        shaderProgram.setUniform1f("borderRadius", borderRadius)
 
         glBindVertexArray(vaoID)
         glDrawElements(GL_TRIANGLES, indices.size, GL_UNSIGNED_INT, 0)
