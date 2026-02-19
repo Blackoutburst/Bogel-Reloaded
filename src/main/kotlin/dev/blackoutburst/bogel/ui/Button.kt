@@ -12,19 +12,23 @@ class Button(
     y: Float,
     var width: Float,
     var height: Float,
-    var textDisplayed: String,
+    textDisplayed: String,
     var borderRadius: Float = 0.0f,
+    initialFontSize: Float = 16f,
+    initialOutlineSize: Float = 1.0f,
+    initialBackgroundColor: Color = Color(0.1f),
+    initialOutlineColor: Color = Color(0.2f)
 ){
-    var fontSize: Float = 16f
-    var outlineSize: Float = 1f
+    var fontSize: Float = initialFontSize
+    var outlineSize: Float = initialOutlineSize
 
-    var backgroundColor: Color = Color(0.1f)
+    var backgroundColor: Color = initialBackgroundColor
         set(value) {
             field = value
             background.color = value
         }
 
-    var outlineColor: Color = Color(0.2f)
+    var outlineColor: Color = initialOutlineColor
         set(value) {
             field = value
             outline.color = value
@@ -85,8 +89,13 @@ class Button(
     }
 
     fun render() {
+        outline.x = x - outlineSize
+        outline.y = y - outlineSize
+
         outline.render()
         background.render()
-        text.render()
+
+        if (text.text.isNotEmpty())
+            text.render()
     }
 }
