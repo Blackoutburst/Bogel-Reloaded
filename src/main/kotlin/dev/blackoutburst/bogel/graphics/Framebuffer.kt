@@ -29,6 +29,8 @@ class Framebuffer(val width: Int, val height: Int, val depthBuffer: Boolean = fa
         )
     }
 
+    private val model = Matrix()
+
     var fbo = glGenFramebuffers()
     var rbo = glGenRenderbuffers()
     var texture = glGenTextures()
@@ -120,7 +122,7 @@ class Framebuffer(val width: Int, val height: Int, val depthBuffer: Boolean = fa
 
         glUseProgram(program.id)
         program.setUniform1i("diffuseMap", 0)
-        program.setUniformMat4("model", Matrix().translate(Vector2f(x, y)).scale(Vector2f(width, height)))
+        program.setUniformMat4("model", model.setIdentity().translate(Vector2f(x, y)).scale(Vector2f(width, height)))
         program.setUniformMat4("view", Camera.view)
         program.setUniformMat4("projection", Camera.projection2D)
         program.setUniform2f("size", width, height)
