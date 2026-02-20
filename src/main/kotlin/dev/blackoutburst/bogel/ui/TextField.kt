@@ -132,12 +132,15 @@ class TextField(
 
     fun onClick(unit: () -> Unit) {
         if (hover && Mouse.isButtonPressed(Mouse.LEFT_BUTTON)) {
+            tickVisible = true
+            tickTimer = 0.0
             focus = true
             unit()
-            Mouse.update()
         }
         if (!hover && Mouse.isButtonPressed(Mouse.LEFT_BUTTON)) {
             focus = false
+            tickVisible = false
+            tickTimer = 0.0
         }
     }
 
