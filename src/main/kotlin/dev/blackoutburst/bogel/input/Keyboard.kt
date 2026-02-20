@@ -7,13 +7,20 @@ object Keyboard {
     const val DOWN = 2
 
     val keys = mutableMapOf<Int, Int>()
+    val chars = mutableListOf<Int>()
 
     fun update() {
+        chars.clear()
         keys.forEach { (key, value) ->
             if (value == PRESS) {
                 keys[key] = DOWN
             }
         }
+    }
+
+    fun reset() {
+        chars.clear()
+        keys.clear()
     }
 
     fun isKeyPressed(key: Int): Boolean {
